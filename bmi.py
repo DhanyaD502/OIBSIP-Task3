@@ -13,16 +13,16 @@ class AdvancedBMICalculator:
         self.root.title("Advanced BMI Calculator Pro")
         self.root.geometry("1200x800")
         self.root.resizable(True, True)
-        self.root.configure(bg="#f0f4f8")  # Light blue-gray background
+        self.root.configure(bg="#f0f4f8")
 
-        # Initialize database
+
         self.init_database()
 
-        # Create notebook (tabs)
+
         self.notebook = ttk.Notebook(root)
         self.notebook.pack(fill="both", expand=True, padx=10, pady=10)
 
-        # Create tabs
+
         self.create_calculator_tab()
         self.create_history_tab()
         self.create_stats_tab()
@@ -69,19 +69,18 @@ class AdvancedBMICalculator:
             bmi = weight / (height ** 2)
             category, color = self.get_bmi_category(bmi)
 
-            # Update display - BIGGER FONTS
             self.result_label.config(
                 text=f"BMI: {bmi:.2f}",
                 fg="black",
                 bg=color,
-                font=("Arial", 32, "bold")  # LARGER FONT
+                font=("Arial", 32, "bold")
             )
             self.category_label.config(
                 text=f"Category: {category}",
-                font=("Arial", 18, "bold")  # LARGER FONT
+                font=("Arial", 18, "bold")
             )
 
-            # Save to database
+
             cursor = self.conn.cursor()
             date = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
             cursor.execute(
@@ -97,61 +96,61 @@ class AdvancedBMICalculator:
             messagebox.showerror("Error", "Please enter valid numbers!")
 
     def create_calculator_tab(self):
-        # Calculator tab - ✅ FIXED: All widgets use SAME geometry manager (grid)
+
         calc_frame = ttk.Frame(self.notebook)
         self.notebook.add(calc_frame, text="Calculator")
 
-        # Title
+
         title = tk.Label(calc_frame, text="🏥 Advanced BMI Calculator",
-                         font=("Arial", 28, "bold"),  # LARGER FONT
+                         font=("Arial", 28, "bold"),
                          fg="#2c3e50")
         title.grid(row=0, column=0, columnspan=2, pady=30)
 
-        # Input frame - ALL GRID (no pack!)
+
         input_frame = ttk.LabelFrame(calc_frame, text="Enter Your Details", padding=20)
         input_frame.grid(row=1, column=0, columnspan=2, pady=20, padx=50, sticky="ew")
 
-        # ALL inputs using GRID - ✅ FIXED geometry manager conflict
+
         tk.Label(input_frame, text="👤 Name:",
                  font=("Arial", 16, "bold")).grid(row=0, column=0, sticky="w", pady=15, padx=(20, 10))
-        self.name_entry = tk.Entry(input_frame, font=("Arial", 16), width=25)  # LARGER FONT
+        self.name_entry = tk.Entry(input_frame, font=("Arial", 16), width=25)
         self.name_entry.grid(row=0, column=1, padx=10, pady=15, sticky="ew")
 
         tk.Label(input_frame, text="⚖️ Weight (kg):",
                  font=("Arial", 16, "bold")).grid(row=1, column=0, sticky="w", pady=15, padx=(20, 10))
-        self.weight_entry = tk.Entry(input_frame, font=("Arial", 16), width=25)  # LARGER FONT
+        self.weight_entry = tk.Entry(input_frame, font=("Arial", 16), width=25)
         self.weight_entry.grid(row=1, column=1, padx=10, pady=15, sticky="ew")
 
         tk.Label(input_frame, text="📏 Height (m):",
                  font=("Arial", 16, "bold")).grid(row=2, column=0, sticky="w", pady=15, padx=(20, 10))
-        self.height_entry = tk.Entry(input_frame, font=("Arial", 16), width=25)  # LARGER FONT
+        self.height_entry = tk.Entry(input_frame, font=("Arial", 16), width=25)
         self.height_entry.grid(row=2, column=1, padx=10, pady=15, sticky="ew")
 
         input_frame.grid_columnconfigure(1, weight=1)
 
-        # Buttons frame - ALL GRID
+
         btn_frame = tk.Frame(input_frame)
         btn_frame.grid(row=3, column=0, columnspan=2, pady=25)
 
         tk.Button(btn_frame, text="🧮 Calculate BMI", command=self.calculate_bmi,
-                  bg="#27ae60", fg="white", font=("Arial", 16, "bold"),  # LARGER FONT + GREEN
+                  bg="#27ae60", fg="white", font=("Arial", 16, "bold"),
                   padx=30, pady=12).pack(side="left", padx=15)
         tk.Button(btn_frame, text="🔄 Clear", command=self.clear_inputs,
-                  bg="#3498db", fg="white", font=("Arial", 16, "bold"),  # LARGER FONT + BLUE
+                  bg="#3498db", fg="white", font=("Arial", 16, "bold"),
                   padx=30, pady=12).pack(side="left", padx=15)
 
-        # Result frame
+
         result_frame = ttk.LabelFrame(calc_frame, text="Your BMI Result", padding=20)
         result_frame.grid(row=2, column=0, columnspan=2, pady=20, padx=50, sticky="ew")
 
         self.result_label = tk.Label(result_frame,
                                      text="Enter data to calculate BMI",
-                                     font=("Arial", 36, "bold"),  # MUCH LARGER FONT
+                                     font=("Arial", 36, "bold"),
                                      width=20, height=2)
         self.result_label.pack(pady=20)
 
         self.category_label = tk.Label(result_frame, text="",
-                                       font=("Arial", 20, "bold"))  # LARGER FONT
+                                       font=("Arial", 20, "bold"))
         self.category_label.pack()
 
         calc_frame.grid_columnconfigure(0, weight=1)
@@ -180,7 +179,7 @@ class AdvancedBMICalculator:
         self.notebook.add(history_frame, text="History")
 
         title = tk.Label(history_frame, text="📋 BMI History",
-                         font=("Arial", 26, "bold"),  # LARGER FONT
+                         font=("Arial", 26, "bold"),
                          fg="#2c3e50")
         title.pack(pady=20)
 
@@ -201,10 +200,10 @@ class AdvancedBMICalculator:
         btn_frame.pack(pady=20)
 
         tk.Button(btn_frame, text="🔄 Refresh", command=self.refresh_history,
-                  bg="#f39c12", fg="white", font=("Arial", 14, "bold"),  # LARGER FONT + ORANGE
+                  bg="#f39c12", fg="white", font=("Arial", 14, "bold"),
                   padx=25, pady=10).pack(side="left", padx=10)
         tk.Button(btn_frame, text="🗑️ Delete Selected", command=self.delete_selected,
-                  bg="#e74c3c", fg="white", font=("Arial", 14, "bold"),  # LARGER FONT + RED
+                  bg="#e74c3c", fg="white", font=("Arial", 14, "bold"),
                   padx=25, pady=10).pack(side="left", padx=10)
 
         self.refresh_history()
@@ -226,7 +225,7 @@ class AdvancedBMICalculator:
         self.notebook.add(stats_frame, text="Statistics & Trends")
 
         title = tk.Label(stats_frame, text="📊 BMI Analytics",
-                         font=("Arial", 26, "bold"),  # LARGER FONT
+                         font=("Arial", 26, "bold"),
                          fg="#2c3e50")
         title.pack(pady=20)
 
@@ -234,13 +233,13 @@ class AdvancedBMICalculator:
         stats_top.pack(pady=20, padx=20, fill="x")
 
         self.stats_label = tk.Label(stats_top, text="Loading statistics...",
-                                    font=("Arial", 18, "bold"))  # LARGER FONT
+                                    font=("Arial", 18, "bold"))
         self.stats_label.pack(pady=20)
 
         chart_frame = tk.Frame(stats_frame)
         chart_frame.pack(fill="both", expand=True, padx=20, pady=10)
 
-        self.fig, self.ax = plt.subplots(figsize=(12, 7))  # Larger chart
+        self.fig, self.ax = plt.subplots(figsize=(12, 7))
         self.canvas = FigureCanvasTkAgg(self.fig, chart_frame)
         self.canvas.get_tk_widget().pack(fill="both", expand=True)
 
